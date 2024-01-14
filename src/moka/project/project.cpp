@@ -12,6 +12,8 @@ namespace moka::project
 {
 
 std::string Global::currentProjectPath = "";
+std::string Global::pathToExe = "";
+std::string Global::pathToExeDir = "";
 
 string osDataDir()
 {
@@ -25,7 +27,7 @@ string osDataDir()
 
 string dataDir() 
 {
-  const string dir = path(osDataDir() + "/" + DATA_DIR_NAME);
+  const string dir = path(osDataDir() + "/" + MOKA_DATA_DIR_NAME);
   if (!exists(dir))
   {
     create_directory(dir);
@@ -34,9 +36,36 @@ string dataDir()
   return dir;
 }
 
+const std::string& exePath()
+{
+  if (Global::pathToExe.empty())
+  {
+#ifdef __linux__
+  Global::pathToExe = std::filesystem::canonical("/proc/self/exe");
+#endif
+#ifdef __WIN32__
+  char path[EXE_PATH_MAX_LENGTH]
+  GetModuleFileName(NULL, path, EXE_PATH_MAX_LENGTH)
+  Global::pathToExe = path;
+#endif
+  }
+
+  return Global::pathToExe;
+}
+
+const std::string& exeDir()
+{
+  if (Global::pathToExeDir.empty())
+  {
+    Global::pathToExeDir = std::filesystem::path(exePath()).parent_path();
+  }
+
+  return Global::pathToExeDir;
+}
+
 string getProjectIndex(const string& projName)
 {
-  const path projectIdxPath = dataDir() + "/" + PROJECT_DB_NAME;
+  const path projectIdxPath = dataDir() + "/" + MOKA_PROJECT_DB_NAME;
 
   ifstream readIndex(projectIdxPath);
 
@@ -65,7 +94,7 @@ string getProjectIndex(const string& projName)
 
 bool createProject(const string& projName, const string& projPath)
 {
-  const path projectIdxPath = dataDir() + "/" + PROJECT_DB_NAME;
+  const path projectIdxPath = dataDir() + "/" + MOKA_PROJECT_DB_NAME;
   const string csvInsert = projName + "," + projPath;
 
   fstream indexFile(projectIdxPath, ios::in | ios::out | ios::app);
@@ -119,7 +148,7 @@ bool addProject(const string& projectName, const string& projectPath)
     return false;
   }
 
-  const path projectIdxPath = dataDir() + "/" + PROJECT_DB_NAME;
+  const path projectIdxPath = dataDir() + "/" + MOKA_PROJECT_DB_NAME;
   ofstream indexFile(projectIdxPath, ios_base::app);
 
   indexFile.clear();
@@ -139,7 +168,7 @@ int loadProjectFromCLI(int argc, char* argv[])
     return 1;
   }
 
-  const path projectIdxPath = dataDir() + "/" + PROJECT_DB_NAME;
+  const path projectIdxPath = dataDir() + "/" + MOKA_PROJECT_DB_NAME;
 
   if (!exists(projectIdxPath))
   {
