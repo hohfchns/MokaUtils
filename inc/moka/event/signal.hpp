@@ -1,8 +1,12 @@
 #pragma once
+#include "moka/event/typedefs.h"
 #include <functional>
 #include <iostream>
 #include <memory>
 #include <unordered_map>
+
+#define MOKA_SIGNAL_CONNECT(signal, object, callback, num_args) \
+signal.Connect(std::bind(&callback, object, std::placeholders::_##num_args))
 
 namespace moka::event
 {
