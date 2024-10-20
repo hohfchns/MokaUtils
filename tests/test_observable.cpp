@@ -1,6 +1,5 @@
 #include "moka/datatypes/observable.hpp"
 #include "moka/macros/assert.h"
-#include "gtest/gtest.h"
 #include <gtest/gtest.h>
 
 using namespace moka::utils::datatypes;
