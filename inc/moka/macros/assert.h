@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(MOKA_LOGGER) && defined(MOKA_ASSERT_LOGGER)
+#if defined(MOKA_ASSERT_LOGGER)
 
 #include "moka/logger/logger.h"
 #include <stdexcept>
