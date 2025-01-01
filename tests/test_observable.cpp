@@ -141,41 +141,41 @@ TEST(MokaUtils, Observable) {
   rect.color = Color{0, 0, 0};
   rect.child_color.object = Color{255, 50, 20};
 
-  MOKA_ASSERT(s_num_called == 1, std::string("Global callback called wrong number of times ") + "(" + std::to_string(s_num_called) + "), " + "should be 1");
-  MOKA_ASSERT(StaticClass::num_called == 1, std::string("Static Class callback called wrong number of times ") + "(" + std::to_string(s_num_called) + "), " + "should be 1");
-  MOKA_ASSERT(rect.local_class.num_called == 1, std::string("Local callback called wrong number of times ") + "(" + std::to_string(s_num_called) + "), " + "should be 1");
+  MOKA_ASSERT(s_num_called == 1, std::string("Global callback called wrong number of times ") + "(" + std::to_string(s_num_called) + ")");
+  MOKA_ASSERT(StaticClass::num_called == 1, std::string("Static Class callback called wrong number of times ") + "(" + std::to_string(s_num_called) + ")");
+  MOKA_ASSERT(rect.local_class.num_called == 1, std::string("Local callback called wrong number of times ") + "(" + std::to_string(s_num_called) + ")");
 
   std::cout << "Position is: " << rect.pos->Str() << std::endl;
   std::cout << "Color is: " << rect.color->Str() << std::endl;
   std::cout << "Child Color is: " << rect.child_color.object.Str() << std::endl;
 
-  MOKA_ASSERT(rect.pos->Str() == "{ 5, 1 }", "Position not set properly (expected { 5, 1 }, got " + rect.pos->Str() + ")");
-  MOKA_ASSERT(rect.color->Str() == rect.child_color.object.Str(), "Color not set properly (expected " + rect.child_color.object.Str() + ", got " + rect.color->Str() + ")");
+  MOKA_ASSERT(rect.pos->Str() == "{ 5, 1 }", "Position not set properly (got " + rect.pos->Str() + ")");
+  MOKA_ASSERT(rect.color->Str() == rect.child_color.object.Str(), "Color not set properly (got " + rect.color->Str() + ")");
 
   rect.pos += Vec2{-1, 1};
   rect.pos += Vec2{10, -50};
 
   std::cout << "Position is: " << rect.pos->Str() << std::endl;
-  MOKA_ASSERT(rect.pos->Str() == "{ 14, -48 }", "Position not set properly (expected { 14, -48 }, got " + rect.pos->Str() + ")");
-  MOKA_ASSERT(s_num_called == 3, std::string("Global callback called wrong number of times ") + "(" + std::to_string(s_num_called) + "), " + "should be 3");
+  MOKA_ASSERT(rect.pos->Str() == "{ 14, -48 }", "Position not set properly (got " + rect.pos->Str() + ")");
+  MOKA_ASSERT(s_num_called == 3, std::string("Global callback called wrong number of times ") + "(" + std::to_string(s_num_called) + ")");
 
   rect.pos = Vec2{INT_MAX, INT_MAX};
   rect.pos = Vec2{INT_MIN, INT_MIN};
 
-  MOKA_ASSERT(s_num_called == 5, std::string("Global callback called wrong number of times ") + "(" + std::to_string(s_num_called) + "), " + "should be 5");
-  MOKA_ASSERT(StaticClass::num_called == 5, std::string("Global callback called wrong number of times ") + "(" + std::to_string(s_num_called) + "), " + "should be 5");
+  MOKA_ASSERT(s_num_called == 5, std::string("Global callback called wrong number of times ") + "(" + std::to_string(s_num_called) + ")");
+  MOKA_ASSERT(StaticClass::num_called == 5, std::string("Global callback called wrong number of times ") + "(" + std::to_string(s_num_called) + ")");
 
   rect.size_x = 50.f;
   rect.size_y = 20.f;
 
-  MOKA_ASSERT(rect.size_x == 50.f, "size_x not set properly (expected 50.f, got " + std::to_string(rect.size_x) + ")");
-  MOKA_ASSERT(rect.size_y == 20.f, "size_x not set properly (expected 20.f, got " + std::to_string(rect.size_y) + ")");
+  MOKA_ASSERT(rect.size_x == 50.f, "size_x not set properly (got " + std::to_string(rect.size_x) + ")");
+  MOKA_ASSERT(rect.size_y == 20.f, "size_x not set properly (got " + std::to_string(rect.size_y) + ")");
 
   rect.color -= {3, 3, 0};
 
-  MOKA_ASSERT(rect.color->Str() == "{ 252, 47, 20 }", "Color not set properly (expected { 252, 47, 20 }, got " + rect.color->Str() + ")");
+  MOKA_ASSERT(rect.color->Str() == "{ 252, 47, 20 }", "Color not set properly (got " + rect.color->Str() + ")");
 
   rect.color += {3, 3, 1};
 
-  MOKA_ASSERT(rect.color->Str() == "{ 255, 50, 21 }", "Color not set properly (expected { 255, 50, 21 }, got " + rect.color->Str() + ")");
+  MOKA_ASSERT(rect.color->Str() == "{ 255, 50, 21 }", "Color not set properly (got " + rect.color->Str() + ")");
 }

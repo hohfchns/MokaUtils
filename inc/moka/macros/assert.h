@@ -26,7 +26,7 @@ if (!(cond)) { MOKA_LOGF_ERROR(MOKA_ASSERT_LOGGER, error_format, __VA_ARGS__); s
 
 #ifndef NDEBUG
 #define MOKA_ASSERT(cond, error_message) \
-if (!(cond)) { std::cerr << error_message << std::endl; std::throw_with_nested(std::runtime_error(error_message)); }
+if (!(cond)) { std::cerr << "Assertion `" #cond "` FAILED | " << error_message << std::endl; std::throw_with_nested(std::runtime_error(error_message)); }
 #else
 #define MOKA_ASSERT(cond, error_message)
 #endif
