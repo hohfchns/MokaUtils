@@ -154,12 +154,26 @@ using ObservableGetterRef = std::function<T&()>;
 
   void operator-=(const T& value)
   {
-    Set(Get() - value);
+    const T& current_val = getter_ref == nullptr ?
+    static_cast<const Observable<T, B>*>(this)->Get()
+    :
+    static_cast<Observable<T, B>*>(this)->Get();
+
+    Set(
+      current_val - value
+    );
   }
 
   void operator+=(const T& value)
   {
-    Set(Get() + value);
+    const T& current_val = getter_ref == nullptr ?
+    static_cast<const Observable<T, B>*>(this)->Get()
+    :
+    static_cast<Observable<T, B>*>(this)->Get();
+
+    Set(
+      current_val + value
+    );
   }
 
   T operator+(const T& other)
