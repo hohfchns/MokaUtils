@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-#define ID_LENGTH 8
+static const size_t ID_LENGTH = 8;
 
 static std::string gen_random_string(size_t length) {
     static const std::string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
