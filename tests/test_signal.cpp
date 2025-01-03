@@ -62,12 +62,12 @@ TEST(MokaUtils, Signal) {
   MOKA_ASSERT(gs_some_called == 1, "Callback not called properly.")
 
   // Basic non-bound ID'd function calling
-  callback_signal.Connect(&another_callback, "another_callback_id");
+  callback_signal.Connect(&another_callback, nullptr, "another_callback_id");
   callback_signal.Emit();
   MOKA_ASSERT(gs_another_called == 1, "Callback not called properly.")
 
   // Basic non-bound disconnection
-  callback_signal.Disconnect("another_callback_id");
+  callback_signal.Disconnect(nullptr, "another_callback_id");
   callback_signal.Emit();
   MOKA_ASSERT(gs_another_called == 1, "Callback not disconnected properly.")
 
@@ -76,6 +76,7 @@ TEST(MokaUtils, Signal) {
   // Bound method calling with lambdas
   callback_signal.Connect(
     [&class_object]() { class_object.LocalCallback(); },
+    &class_object,
     "method_callback_id"
   );
   callback_signal.Emit();
@@ -83,6 +84,7 @@ TEST(MokaUtils, Signal) {
 
   // Bound method disconnection
   callback_signal.Disconnect(
+    &class_object,
     "method_callback_id"
   );
   callback_signal.Emit();
@@ -91,12 +93,14 @@ TEST(MokaUtils, Signal) {
   // Bound method with std::bind
   callback_signal.Connect(
     std::bind(&SomeClass::LocalCallback, &class_object),
+    &class_object,
     "method_callback_id"
   );
   callback_signal.Emit();
   MOKA_ASSERT(class_object.num_called == 2, "Local Callback not called properly.");
 
   callback_signal.Disconnect(
+    &class_object,
     "method_callback_id"
   );
 
@@ -117,12 +121,14 @@ TEST(MokaUtils, Signal) {
   // Bound method with arg
   message_signal.Connect(
     [&class_object](const std::string& arg) { class_object.LocalCallbackWithArgs(arg); },
+    &class_object,
     "method_callback_with_args_id"
   );
   message_signal.Emit("Test Message 2");
   MOKA_ASSERT(class_object.num_called == 3, "Local Callback with args not called properly.");
 
   message_signal.Disconnect(
+    &class_object,
     "method_callback_with_args_id"
   );
 
@@ -133,7 +139,7 @@ TEST(MokaUtils, Signal) {
 
   // ID'd Bound method with macro (supports up to 4 arguments)
   MOKA_SIGNAL_CONNECT_ID(message_signal, "method_callback_with_args_id", &class_object, SomeClass::LocalCallbackWithArgs, 1);
-  message_signal.Emit("Test Message 4");
+  message_signal.Emit("Test Message 5");
   MOKA_ASSERT(class_object.num_called == 6, "Local Callback with args not called properly.");
 
   bool exception_thrown = false;
@@ -149,6 +155,7 @@ TEST(MokaUtils, Signal) {
 
   // Make sure to disconnect the callback and not leave a dangling pointer.
   message_signal.Disconnect(
+    &class_object,
     "method_callback_with_args_id"
   );
 }
