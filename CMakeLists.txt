@@ -17,6 +17,7 @@ file (
   GLOB TESTS_SOURCE_FILES
   "tests/test_main.cpp"
   "tests/test_observable.cpp"
+  "tests/test_signal.cpp"
 )
 
 add_library(MokaUtils STATIC ${SOURCE_FILES})
